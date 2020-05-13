@@ -10,16 +10,16 @@ IF NOT (DEFINED vehicle) OR NOT (DEFINED sequence) OR NOT (DEFINED controls) OR 
 }
 
 // Load settings and libraries.
-RUN pegas_settings.
+RUN "0:/pegas/kos/pegas_settings".
 IF cserVersion = "new" {
-    RUN pegas_cser_new.
+    RUN "0:/pegas/kos/pegas_cser_new".
 } ELSE {
-    RUN pegas_cser.
+    RUN "0:/pegas/kos/pegas_cser".
 }
-RUN pegas_upfg.
-RUN pegas_util.
-RUN pegas_misc.
-RUN pegas_comm.
+RUN "0:/pegas/kos/pegas_upfg".
+RUN "0:/pegas/kos/pegas_util".
+RUN "0:/pegas/kos/pegas_misc".
+RUN "0:/pegas/kos/pegas_comm".
 
 // The following is absolutely necessary to run UPFG fast enough.
 SET CONFIG:IPU TO kOS_IPU.

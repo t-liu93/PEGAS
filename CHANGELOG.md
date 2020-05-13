@@ -1,5 +1,8 @@
 ### Change log
 
+## Add absolute path in pegas.ks (2020-05-03)
+In pegas.ks, I am using absolute path start from the root of this repo. This is convenient for using this repo as a submodule in the script archive.
+
 ## Modify initial roll angle (2020-05-13)
 To give a better launch performance, just like Mechjeb PVG, if the initial roll angle is not given, then the initial roll angle will be the launch azimuth.
 
