@@ -1,5 +1,8 @@
 ### Change log
 
+## Modify initial roll angle (2020-05-13)
+To give a better launch performance, just like Mechjeb PVG, if the initial roll angle is not given, then the initial roll angle will be the launch azimuth.
+
 ## [v1.1](https://github.com/Noiredd/PEGAS/releases/tag/v1.1) (2017-11-05)
 Multiple fixes for bugs identified after the initial release and new features requested since.
 

@@ -62,6 +62,11 @@ IF NOT mission:HASKEY("launchAzimuth") {
 IF controls:HASKEY("initialRoll") {
     SET steeringRoll TO controls["initialRoll"].
 }
+else
+{
+    // If no steering roll is given, then just like MechJeb's PVG launch, set initial roll to launch azimuth.
+    set steeringRoll to launchAzimuth().
+}
 // Set up the system for flight
 setSystemEvents().        // Set up countdown messages
 setUserEvents().        // Initialize vehicle sequence
