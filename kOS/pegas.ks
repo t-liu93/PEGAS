@@ -88,10 +88,10 @@ UNTIL ABORT {
     IF  commsEventFlag = TRUE {  commsEventHandler(). }
     // Control handling
     IF ascentFlag = 0 {
+        SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
         // The vehicle is going straight up for given amount of time
         IF TIME:SECONDS >= liftoffTime:SECONDS + controls["verticalAscentTime"] {
             // Then it changes attitude for an initial pitchover "kick"
-            SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
             SET ascentFlag TO 1.
             pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
         }

@@ -1,6 +1,9 @@
 ### Change log
 
-## Add absolute path in pegas.ks (2020-05-03)
+## Apply initial roll at the beginning of the launch (2020-05-13)
+Now the initial roll will be applied eariler, start from T-0.
+
+## Add absolute path in pegas.ks (2020-05-13)
 In pegas.ks, I am using absolute path start from the root of this repo. This is convenient for using this repo as a submodule in the script archive.
 
 ## Modify initial roll angle (2020-05-13)
