@@ -1,3 +1,6 @@
+# About this Fork
+This is a fork of Noiredd's PEGAS script, I'll keep working on it based on my own need and wishes.
+
 # PEGAS
 *Powered Explicit Guidance Ascent System*, from here referred to as *PEGAS*, is an ascent autopilot for Kerbal Space Program made and ran in [kOS](http://forum.kerbalspaceprogram.com/index.php?/topic/61827-122-kos-scriptable-autopilot-system-v103-20161207/), designed to control launch vehicles under a modified version of the game running [Realism Overhaul](http://forum.kerbalspaceprogram.com/index.php?/topic/155700-113-realism-overhaul).
 Its unique feature is an implementation of a real-word rocket guidance algorithm: Unified Powered Flight Guidance, as used in the **Space Shuttle** GN&C computer for the standard ascent flight mode.
