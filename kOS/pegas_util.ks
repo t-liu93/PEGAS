@@ -695,6 +695,18 @@ FUNCTION userEventHandler {
             sequence[userEventPointer]:ADD("message", "Rolling to " + steeringRoll + " degrees").
         }
     }
+    else if eType = "actiongroup" or eType = "ag"
+    {
+        if sequence[userEventPointer]:haskey("actiongroup")
+        {
+            sequence[userEventPointer]["actiongroup"] on.
+            sequence[userEventPointer]["actiongroup"] off.
+        }
+        else
+        {
+            pushUIMessage("No action group given.").
+        }
+    }
     ELSE { pushUIMessage( "Unknown event type (" + eType + ", message='" + sequence[userEventPointer]["message"] + "')!", 5, PRIORITY_HIGH ). }
     // Print event message, if requested
     IF sequence[userEventPointer]:HASKEY("message") {

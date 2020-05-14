@@ -90,28 +90,32 @@ Allows executing custom events.
 Each element of the list is a separate event.
 It is **crucial** that the order of events in the list is the same as the order of executing them.
 
-Key      | Type/units | Meaning
----      | ---        | ---
-time     | s          | Time after liftoff, when this event is to be executed.
-type     | `string`   | Type of the event. See below for the complete list.
-message  | `string`   | Optional\*. Message that will be printed in the terminal when the event is executed.
-throttle | `scalar`   | **Used only if** `type` **is** `"throttle"`. Desired throttle setting, value in range \[0-1\].
-massLost | `scalar`   | **Used only if** `type` **is** `"jettison"`. Informs the system of mass amount lost in the process.
-angle    | `scalar`   | **Used only if** `type` **is** `"roll"`. New roll angle.
+Key         | Type/units         | Meaning
+---         | ---                | ---
+time        | s                  | Time after liftoff, when this event is to be executed.
+type        | `string`           | Type of the event. See below for the complete list.
+message     | `string`           | Optional\*. Message that will be printed in the terminal when the event is executed.
+throttle    | `scalar`           | **Used only if** `type` **is** `"throttle"`. Desired throttle setting, value in range \[0-1\].
+massLost    | `scalar`           | **Used only if** `type` **is** `"jettison"`. Informs the system of mass amount lost in the process.
+angle       | `scalar`           | **Used only if** `type` **is** `"roll"`. New roll angle.
+actiongroup | `action group`     | **Used only if** `type` **is** `"actiongroup"`, the action group to be triggered.
 
 \* - for events of type `throttle` and `roll` message will be automatically generated.
 
 Available event types:
 
-Type     | Short\* | Explanation
----      | ---     | ---
-print    | p       | Prints `message` in the GUI, nothing else.
-stage    | s       | Hits spacebar (a single `STAGE.` command in kOS).
-jettison | j       | Like `stage` but accounts for the mass lost during the event (subtracting the value under `massLost` key).
-throttle | t       | Sets the throttle to given value (`throttle` key) - only works during the passive guidance phase.
-roll     | r       | Changes the roll component of vehicle attitude (pitch and yaw are dynamically calculated).
+Type         | Short\* | Explanation
+---          | ---     | ---
+print        | p       | Prints `message` in the GUI, nothing else.
+stage        | s       | Hits spacebar (a single `STAGE.` command in kOS).
+jettison     | j       | Like `stage` but accounts for the mass lost during the event (subtracting the value under `massLost` key).
+throttle     | t       | Sets the throttle to given value (`throttle` key) - only works during the passive guidance phase.
+roll         | r       | Changes the roll component of vehicle attitude (pitch and yaw are dynamically calculated).
+actiongroup | ag      | Run action group `X`, `X` is given as `agX` in `actiongroup` key. This is the same as you press number `X` once\**.
 
 \* - can be used instead of the full event type name.
+
+\** - Be aware the value of key `actiongroup` must be a valid action group, otherwise the program will crash and burn.
 
 ### Mission
 `GLOBAL mission IS LEXICON().`
