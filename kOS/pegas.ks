@@ -86,19 +86,36 @@ UNTIL ABORT {
     IF systemEventFlag = TRUE { systemEventHandler(). }
     IF   userEventFlag = TRUE {   userEventHandler(). }
     IF  commsEventFlag = TRUE {  commsEventHandler(). }
+    local verticalAscentTime is 0.
     // Control handling
     IF ascentFlag = 0 {
-        SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
-        // The vehicle is going straight up for given amount of time
-        IF TIME:SECONDS >= liftoffTime:SECONDS + controls["verticalAscentTime"] {
-            // Then it changes attitude for an initial pitchover "kick"
-            SET ascentFlag TO 1.
-            pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
+        // The vehicle is going straight up for given amount of time or given amount of vertical velocity
+        if controls:haskey("verticalAscentTime")
+        {
+            set verticalAscentTime to controls["verticalAscentTime"].
+            IF TIME:SECONDS >= liftoffTime:SECONDS + controls["verticalAscentTime"] {
+                SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
+                // Then it changes attitude for an initial pitchover "kick"
+                SET ascentFlag TO 1.
+                pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
+            }
+        }
+        else
+        {
+            if ship:verticalSpeed >= controls["verticalAscentSpeed"]
+            {
+                set verticalAscentTime to time:seconds.
+                // TODO: Use a function to do pitch
+                SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
+                // Then it changes attitude for an initial pitchover "kick"
+                SET ascentFlag TO 1.
+                pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
+            }
         }
     }
     ELSE IF ascentFlag = 1 {
         // It keeps this attitude until velocity vector matches it closely
-        IF TIME:SECONDS < liftoffTime:SECONDS + controls["verticalAscentTime"] + 3 {
+        IF TIME:SECONDS < liftoffTime:SECONDS + verticalAscentTime + 3 {
             // Delay this check for the first few seconds to allow the vehicle to pitch away from current prograde
         } ELSE {
             // Attitude must be recalculated at every iteration though
@@ -108,7 +125,7 @@ UNTIL ABORT {
             }
         }
         // As a safety check - do not stay deadlocked in this state for too long (might be unnecessary).
-        IF TIME:SECONDS >= liftoffTime:SECONDS + controls["verticalAscentTime"] + pitchOverTimeLimit {
+        IF TIME:SECONDS >= liftoffTime:SECONDS + verticalAscentTime + pitchOverTimeLimit {
             SET ascentFlag TO 2.
             pushUIMessage( "Pitchover time limit exceeded!", 5, PRIORITY_HIGH ).
         }

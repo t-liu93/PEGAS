@@ -12,7 +12,7 @@ You can read more about the algorithm [here](https://github.com/Noiredd/PEGAS-MA
 The ascent with PEGAS is divided into 3 phases.
 In the **pre-launch** phase, the launch time and azimuth are calculated, and the vehicle sits on the pad patiently waiting.
 In the **atmospheric ascent** phase, the vehicle goes up for some time, then pitches over by some angle, and once the velocity vector matches its attitude, it keeps prograde (a.k.a. performs a simple gravity turn).
-Finally, in the **closed-loop guidance** phase (or *active guidance*), the UPFG algorithm controls the vehicle, automatically guiding it onto a desired trajectory.  
+Finally, in the **closed-loop guidance** phase (or *active guidance*), the UPFG algorithm controls the vehicle, automatically guiding it onto a desired trajectory.
 All of those phases require information from *you*. You need to input the parameters of the gravity turn, information about your vehicle and its intended destination.
 In this short tutorial, I will explain how to provide that information.
 Reading is strongly encouraged, as PEGAS is quite complex.
@@ -35,7 +35,7 @@ PEGAS will do the following things for you:
 
 To understand everything that follows, a strong emphasis has to be put on the difference between phase 1 and 2.
 During the atmospheric ascent, PEGAS does absolutely nothing beyond pitching over and holding prograde.
-Only during the active guidance phase it reveals its smarts - not only it dynamically calculates pitch & yaw angles, but it also *automatically handles staging*.  
+Only during the active guidance phase it reveals its smarts - not only it dynamically calculates pitch & yaw angles, but it also *automatically handles staging*.
 The reason is that the moment of switching between phases is customizable - so manually recalculating each and every event needed to perform a successful staging (jettison, ullage burn, ignition, ...) would be a terrible hassle.
 Instead, for each stage you define *how* to activate it, and when the time comes, PEGAS just does what it's told to.
 If you want something else to happen (eg. during the atmospheric ascent), you need to manually specify it using `sequence` (read on).
@@ -45,7 +45,7 @@ This tutorial is a conceptual overview of what you need to do - for details of t
 
 ### [Controls](reference.md#controls)
 
-This variable controls behavior of the vehicle prior to and during the atmospheric ascent.  
+This variable controls behavior of the vehicle prior to and during the atmospheric ascent.
 I specifically mention it first because it is crucial to successful flight, and the most difficult one to get right.
 As summarized in the reference, it holds 4 keys. Their meanings are as follows:
 
@@ -55,7 +55,7 @@ Obviously, launch timing is crucial in order to hit the right plane - intuitivel
 We cannot launch directly when it happens though - the vehicle inherits the Earth's circumferential velocity and continues drifting east, past the orbit.
 When UPFG kicks in, it tries to correct for that drift by aiming more towards west than would otherwise be necessary.
 Sometimes it can recover from that, other times not - but the more *late* the launch was, the more performance degradation this causes; eventually, vehicle might not have enough fuel to make it to orbit.
-Similar situation occurs if the launch was timed too early - UPFG points the vehicle more to the east, to make it *catch up* with the target plane, wasting fuel in the same manner.  
+Similar situation occurs if the launch was timed too early - UPFG points the vehicle more to the east, to make it *catch up* with the target plane, wasting fuel in the same manner.
 This is a difficult parameter to get right, but fortunately as long as you're in a reasonable range, it only hinders performance (instead of causing critical failures).
 Experimentally, I found times of 120-150 seconds to work good.
 Vehicles that reach orbit faster will need less advance time, while those long burning upper stages might use more.
@@ -64,22 +64,26 @@ Vehicles that reach orbit faster will need less advance time, while those long b
 Atmospheric ascent is difficult from a guidance standpoint, and doing it automatically is far beyond the scope of this project.
 Instead, you have control over it using two parameters.
 The process is simple: after a certain *time* after liftoff, your vehicle will pitch over by a certain *angle*.
-It will hold this attitude until the velocity vector matches it, and then it will lock to prograde, so as to minimize the angle of attack (and hence risk of a RUD).  
+It will hold this attitude until the velocity vector matches it, and then it will lock to prograde, so as to minimize the angle of attack (and hence risk of a RUD).
 Rules are that the earlier you pitch over and the larger its angle, the shallower your ascent.
 In a worst case, your vehicle will fall back to the ocean (or, more likely, get torn apart due to flying too fast too low).
 On the other hand, if you pitch over too little and too late, your gravity turn will not *turn* you enough, and your vehicle will be going too vertically.
-Additionally, the more TWR your vehicle has, the sooner and more aggressively you can turn - a good overview on that is given by [ferram in the RO wiki](https://github.com/KSP-RO/RealismOverhaul/wiki/Ferram-on-Ascent-Profile-and-TWR).  
+Additionally, the more TWR your vehicle has, the sooner and more aggressively you can turn - a good overview on that is given by [ferram in the RO wiki](https://github.com/KSP-RO/RealismOverhaul/wiki/Ferram-on-Ascent-Profile-and-TWR).
 This is a doubly important parameter, since it directly influences UPFG phase.
 It is difficult to give any clues regarding what your altitude and apoapse should be when the atmospheric ascent ends, because different vehicles behave differently.
-Generally though, if you target a 200 km orbit and UPFG engages when you're on 45 km with a 50 km apoapsis, or on 120 km with 350 km apoapsis - it's a hint that your gravity turn was too shallow/too steep.  
+Generally though, if you target a 200 km orbit and UPFG engages when you're on 45 km with a 50 km apoapsis, or on 120 km with 350 km apoapsis - it's a hint that your gravity turn was too shallow/too steep.
 You can get a hint on what to do if you look at the pitch that UPFG calculated after activation.
 If it pitches significantly above prograde, it means that your ascent was too shallow and UPFG needs to gain some more vertical velocity.
 If it pitches below prograde (it may even point below horizon in some cases!), your ascent was probably too steep.
 
 Getting `verticalAscentTime` and `pitchOverAngle` right might take several attempts.
-Getting it perfect (so that the UPFG-generated pitch matches prograde) might turn out impossible - not without finer control over the ascent.  
+Getting it perfect (so that the UPFG-generated pitch matches prograde) might turn out impossible - not without finer control over the ascent.
 Tuning those variables might prove particularly difficult if you're getting low ingame FPS during liftoff, or your launch clamps misbehave.
 Unpredictable separation that disrupts your vehicle from flying straight can even make a good settings randomly fail. Beware.
+
+##### verticalAscentSpeed
+
+Vertical ascent speed was first used in Mechjeb PVG ascent guidance. It's a bit more convenient to use this field in PEGAS as well, if you have a vehicle that supports a large range of payload mass (e.g. from 5t to 25t). The perfect value of this field is highly depending on the vehicle, just like `verticalAscentTime`. A starting point of this field can be `50m/s` for a vehicle with an initial SLT at 1.6 or more, `75m/s` for a vehicle with an initial SLT at 1.4 and `100m/s` for a vehicle with an initial SLT at around 1.2.
 
 ##### upfgActivation
 This is when the atmospheric ascent ends, and active guidance begins.
@@ -108,7 +112,7 @@ You **do not** have to include mass of the payload in it - PEGAS automatically d
 
 "Staging" is to be understood as hitting spacebar in a timed order.
 It happens when a currently flying stage burns out - but **beware**!
-PEGAS does not dynamically check *anything* - the only way it knows that the stage has burned out, is because it divided the mass of the fuel it had by the total flow of its engines.  
+PEGAS does not dynamically check *anything* - the only way it knows that the stage has burned out, is because it divided the mass of the fuel it had by the total flow of its engines.
 The staging logic is as follows: when a stage is activated, its staging sequence is run, and the following things happen:
 * if the previous stage has to be jettisoned as a separate event, some time is waited and spacebar is hit,
 * if the current stage needs engines to be explicitly ignited, some time is waited and ullage sequence starts:
@@ -133,7 +137,7 @@ By contrast, you could be flying an Atlas V, and waiting till its booster burns 
 You can define `upfgActivation` so that UPFG is engaged while the booster burns, and specify no ignition event for that stage.
 It *would be* quite cumbersome to have to calculate the vehicle's mass at that point before the flight - but PEGAS has one trick to make it easier.
 If a first actively guided stage requires no ignition, it assumes the stage has been burning from time zero: it checks the current mass, compares that with the dry mass of the stage and infers the amount of fuel left in the tanks.
-In this case, the only thing you need to do is provide that dry mass, and set the `upfgActivation` to virtually any moment.  
+In this case, the only thing you need to do is provide that dry mass, and set the `upfgActivation` to virtually any moment.
 This also works if you decide to drop the SRBs and activate UPFG in one go, simply by stating `"jettison", TRUE` in the [`staging`](reference.md#staging) entry.
 
 ##### Note about constant-acceleration phases
@@ -147,7 +151,7 @@ Therefore, PEGAS **must** know what is the throttle limit in order to calculate 
 Additionally, you have to pay attention to your vehicle's mass.
 PEGAS makes a burn time prediction based on what is the vehicle's mass, and schedules the next stage separation/ignition basing on that.
 If the actual vehicle's mass turns out to be lower than the value in the `vehicle` structure, the resulting throttle commands (which are always based on the current *measured* mass) will be smaller than predicted.
-This will cause lower than predicted fuel consumption, and consequently longer than predicted burn time - in the worst case, the next stage will separate while the current one is still burning, causing the two to collide.  
+This will cause lower than predicted fuel consumption, and consequently longer than predicted burn time - in the worst case, the next stage will separate while the current one is still burning, causing the two to collide.
 Even something as innocent as jettisoning the payload fairings can have grave consequences if you haven't prepared your vehicle for that.
 PEGAS provides you with a special tool: the `jettison` event, which allows you to inform the system of the mass lost during the event (see below).
 
@@ -158,7 +162,7 @@ This is how you control timed events, like:
 * rolling to given attitude,
 * throttle (only in the atmospheric ascent phase)\*.
 
-See the reference to all possible events and how to use them.  
+See the reference to all possible events and how to use them.
 As you see, both `sequence` and `vehicle` can cause a staging (equivalent to hitting spacebar).
 The main difference between `vehicle` staging and `sequence`, is that vehicle staging events are bound to the *physical parameters of the vehicle* (how much fuel does a stage have, how fast does it consume it => when does the next stage activate), while `sequence` events are bound directly to time (counted from lift-off).
 For this reason, you must pay attention that your timed events be properly aligned in the in-game staging sequence, with respect to the staging events.
@@ -183,11 +187,11 @@ Important note: selecting target will only work for bodies orbiting the Earth (o
 ### Summary
 1. Set up your `vehicle` variable, defining each stage starting from the one that will be burning when the UPFG kicks in.
 2. Set up `controls`, using [ferram's guide](https://github.com/KSP-RO/RealismOverhaul/wiki/Ferram-on-Ascent-Profile-and-TWR) and experiment.
-3. With the atmospheric ascent phase set, and active guidance staging events as well, check if you have any events that are not covered in either.  
-Need to drop SRBs while in atmosphere?  
-Jettison paylod fairing when you're confident the altitude is high enough?  
-Set up the `sequence` accordingly.  
-Bear in mind that it needs to have at least one element: the release clamps command at time zero!  
+3. With the atmospheric ascent phase set, and active guidance staging events as well, check if you have any events that are not covered in either.
+Need to drop SRBs while in atmosphere?
+Jettison paylod fairing when you're confident the altitude is high enough?
+Set up the `sequence` accordingly.
+Bear in mind that it needs to have at least one element: the release clamps command at time zero!
 Those steps get your vehicle ready (you may enclose them in a single script and bind it as a boot file to your vehicle).
 4. Now the only thing you need to do is specify where you want it to go: define your `mission`.
 5. When in kOS terminal, load those 4 variables (boot files or by simply running scripts).
@@ -207,15 +211,15 @@ Optionally, you can create a subfolder `boot` in there, if you want to use the [
 
 In order to follow with this tutorial, I recommend starting with a new, empty script in `KSP\Ships\Script\` - let's call it `myVehicle.ks`.
 In this script, you go with points 1-3 from the [summary](#summary) - a good reference for that is any of the example [boot files](../kOS/boot).
-If you did everything right so far, `myVehicle.ks` should contain **three** global variables: `vehicle`, `controls`, and `sequence`.  
+If you did everything right so far, `myVehicle.ks` should contain **three** global variables: `vehicle`, `controls`, and `sequence`.
 Now create a new empty script, let's say `myMission.ks`.
 In there, perform the 4th step: declare your `mission`; here are some [examples](../examples/) how to do that.
 
 Now you are ready to fly.
 Recheck your staging sequence and put your vehicle on the launchpad.
-Open the kOS terminal and type `SWITCH TO 0.` in order to be able to load the files you've just prepared.  
-`RUN myVehicle.` loads your vehicle definition - alternatively, you could use that script as a bootfile, to get to that point automatically.  
-`RUN myMission.` loads your mission definition.  
+Open the kOS terminal and type `SWITCH TO 0.` in order to be able to load the files you've just prepared.
+`RUN myVehicle.` loads your vehicle definition - alternatively, you could use that script as a bootfile, to get to that point automatically.
+`RUN myMission.` loads your mission definition.
 As the last thing, `RUN pegas.` - if you did everything right, after a while of loading you should see the PEGAS interface with a countdown.
 If you forgot to specify some of the variables, PEGAS will notice that and crash on purpose (leaving an error message that should tell you what was missing).
 If however you made some mistakes... there are very few safety checks, and PEGAS assumes that everything you did, you did on purpose.

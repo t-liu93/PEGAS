@@ -7,16 +7,19 @@ Variable of type `LEXICON`.
 Defines vehicle behavior in phases 0 and 1 (pre-launch and atmospheric ascent).
 List of possible keys:
 
-Key                | Units | Opt/req  | Meaning
----                | ---   | ---      | ---
-launchTimeAdvance  | s     | required | Launch time will be scheduled that many seconds before the launch site rotates directly under the target orbit
-verticalAscentTime | s     | required | After liftoff, vehicle will fly straight up for that many seconds before pitching over
-pitchOverAngle     | deg   | required | Vehicle will pitch over by that many degrees away from vertical
-upfgActivation     | s     | required | The active guidance phase will be activated that many seconds after liftoff
-launchAzimuth      | deg   | optional | Overrides automatic launch azimuth calculation, giving some basic optimization capability\*
-initialRoll        | deg   | optional | Angle to which the vehicle will roll during the initial pitchover maneuver (default is 0)
+Key                 | Units | Opt/req   | Meaning
+---                 | ---   | ---       | ---
+launchTimeAdvance   | s     | required  | Launch time will be scheduled that many seconds before the launch site rotates directly under the target orbit
+verticalAscentTime  | s     | optional* | After liftoff, vehicle will fly straight up for that many seconds before pitching over
+verticalAscentSpeed | m/s   | optional* | After liftoff, vehicle will fly straight up until that amount of vertical speed before pitching over
+pitchOverAngle      | deg   | required  | Vehicle will pitch over by that many degrees away from vertical
+upfgActivation      | s     | required  | The active guidance phase will be activated that many seconds after liftoff
+launchAzimuth       | deg   | optional  | Overrides automatic launch azimuth calculation, giving some basic optimization capability**
+initialRoll         | deg   | optional  | Angle to which the vehicle will roll during the initial pitchover maneuver (default is 0)
 
-\* - see notes to [`mission`](#mission) struct.
+\* - of these two fields, `verticalAscentTime` and `verticalAscentSpeed`, one of these two must be given. If both of them are given, `verticalAscentTime` will be taken.
+
+\*\* - see notes to [`mission`](#mission) struct.
 
 ### Vehicle
 `GLOBAL vehicle IS LIST().`
@@ -38,8 +41,8 @@ shutdownRequired | `boolean`  | optional  | Do this stage's engines need explici
 engines          | `list`     | required  | Parameters of each engine in the stage (details further)
 staging          | `lexicon`  | required  | Description of method of activation of this stage (details further)
 
-\* - of the three fields, `massTotal`, `massFuel` and `massDry`, one can be skipped, but **two** have to be given.  
-\*\* - required if `gLim` is given.  
+\* - of the three fields, `massTotal`, `massFuel` and `massDry`, one can be skipped, but **two** have to be given.
+\*\* - required if `gLim` is given.
 \*\*\* - in normal usage this has no effect, since PEGAS schedules staging exactly in the moment the stage runs out of fuel.
 The purpose of this option was to enable controlling vehicles with reusable booster, which can be configured to not burn all of its fuel (e.g. by having some of the fuel counted as its dry mass).
 PEGAS by default would not shut its engines, potentially causing a collision during separation.
@@ -127,7 +130,7 @@ inclination | deg        | **Optional**. Inclination of the target orbit. When n
 LAN         | deg        | **Optional**. Longitude of ascending node of the target orbit. When not given, will be calculated for an instantaneous launch.
 direction   | `string`   | **Optional**. Direction of launch. Allowed values: `north`, `south`, `nearest`. By default it is `nearest`.
 
-In case of selecting target from the map, `inclination` and `LAN` will be overwritten from the target data, but apoapsis and periapsis will not.  
+In case of selecting target from the map, `inclination` and `LAN` will be overwritten from the target data, but apoapsis and periapsis will not.
 Inclination can be omitted - it will be then set to the launch site latitude *magnitude*.
 LAN can also be omitted - in this case it will be calculated for a "right now" launch, depending on `direction`.
 If both LAN is set free and `direction` is set to `nearest`, the latter will be overridden with `north`.
