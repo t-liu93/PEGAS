@@ -3,7 +3,7 @@
 ## Add field verticalAscentSpeed in control (2020-05-14)
 * A new field `verticalAscentSpeed` is added to configure your vehicle. You can choose to let your vehicle start boost pitch at given time, or at given vertical speed.
 
-* In sequence, a new event type `actiongroup` is added. So now you can control custom action group in a time-based sequence. This is useful for ejecting launch tower in crewed missions.
+* In sequence, a new event type `actiongroup` is added. So now you can control custom action group in a time-based sequence. This is useful for ejecting launch tower in crewed missions. This is not fully tested yet.
 
 ## Add absolute path in pegas.ks (2020-05-13)
 * In pegas.ks, I am using absolute path start from the root of this repo. This is convenient for using this repo as a submodule in the script archive.
