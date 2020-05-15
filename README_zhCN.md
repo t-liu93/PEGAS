@@ -1,23 +1,23 @@
-***Simplified Chinese version of this file***
-* [中文版](./README_zhCN.md)
-# About this Fork
-This is a fork of [Noiredd's](https://github.com/Noiredd) PEGAS script, I'll keep working on it based on my own need and wishes.
+# 关于这个分支
+这个分支来源于原作者[Noiredd](https://github.com/Noiredd)的PEGAS项目，一个将航天飞机发射导航算法使用kOS在坎巴拉太空计划中的实现。
 
 # PEGAS
-*Powered Explicit Guidance Ascent System*, from here referred to as *PEGAS*, is an ascent autopilot for Kerbal Space Program made and ran in [kOS](http://forum.kerbalspaceprogram.com/index.php?/topic/61827-122-kos-scriptable-autopilot-system-v103-20161207/), designed to control launch vehicles under a modified version of the game running [Realism Overhaul](http://forum.kerbalspaceprogram.com/index.php?/topic/155700-113-realism-overhaul).
-Its unique feature is an implementation of a real-word rocket guidance algorithm: Unified Powered Flight Guidance, as used in the **Space Shuttle** GN&C computer for the standard ascent flight mode.
-Short list of what PEGAS is capable of:
-* estimation of a launch window,
-* calculation of a launch azimuth,
-* simple atmospheric ascent by pitching over and holding prograde with zero angle of attack,
-* automatic guidance to orbits defined by:
-  * apoapse
-  * periapse
-  * inclination
-  * longitude of ascending node
-  * or, alternatively, selecting an existing target,
-* executing of timed events (engine ignition, payload fairing jettison etc.),
-* automatic staging with ullage handling.
+*Powered Explicit Guidance Ascent System*, 又被称为 *PEGAS*，是一个在坎巴拉太空计划中使用[kOS](http://forum.kerbalspaceprogram.com/index.php?/topic/61827-122-kos-scriptable-autopilot-system-v103-20161207/)实现的自动发射系统。这个系统可以被用来在安装了[真实大修模组](http://forum.kerbalspaceprogram.com/index.php?/topic/155700-113-realism-overhaul)的游戏中进行自动发射。
+
+这个发射系统实现了现实世界中的***Unified Powered Flight Guidance***算法，也就是被用在航天飞机发射中的算法。
+
+这个系统主要包括了以下特性：
+* 估算发射窗口
+* 计算发射方位角
+* 简单的大气中制导，制导的方式是对火箭施加一个小的俯仰角，然后保持火箭的姿态与速度方向相同（即保持0°攻角）
+* 自动入轨导航由以下参数控制：
+  * 远拱点
+  * 近拱点
+  * 轨道倾角
+  * 升交点经度
+  * 或者，选取一个目标飞行器
+* 执行由时间控制的事件（例如发动机点火、抛整流罩等）
+* 自动分级并且包含沉底控制
 
 More info on my KSP [forum thread](http://forum.kerbalspaceprogram.com/index.php?/topic/142213-pegas-powered-explicit-guidance-ascent-system-devlog/), also see my [prototype repository](https://github.com/Noiredd/PEGAS-MATLAB).
 
