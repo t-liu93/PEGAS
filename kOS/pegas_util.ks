@@ -697,10 +697,17 @@ FUNCTION userEventHandler {
     }
     else if eType = "actiongroup" or eType = "ag"
     {
-        if sequence[userEventPointer]:haskey("actiongroup")
+        if sequence[userEventPointer]:haskey("groupnumber")
         {
-            sequence[userEventPointer]["actiongroup"] on.
-            sequence[userEventPointer]["actiongroup"] off.
+            local groupNumber is sequence[userEventPointer]["groupnumber"].
+            if groupNumber > 10 or groupNumber < 1
+            {
+                pushUIMessage("Unsupport group number!").
+            }
+            else
+            {
+                actiongroup_handler(sequence[userEventPointer]["groupnumber"]).
+            }
         }
         else
         {
@@ -949,4 +956,50 @@ FUNCTION throttleControl {
         SET throttleDisplay TO desiredThrottle.
     }
     ELSE { pushUIMessage( "throttleControl stage error (stage=" + upfgStage + "(" + whichStage + "), mode=" + vehicle[whichStage]["mode"] + ")!", 5, PRIORITY_CRITICAL ). }.
+}
+
+function actiongroup_handler
+{
+    declare parameter agNum.
+
+    if agNum = 1
+    {
+        ag1 on.
+    }
+    else if agNum = 2
+    {
+        ag2 on.
+    }
+    else if agNum = 3
+    {
+        ag3 on.
+    }
+    else if agNum = 4
+    {
+        ag4 on.
+    }
+    else if agNum = 5
+    {
+        ag5 on.
+    }
+    else if agNum = 6
+    {
+        ag6 on.
+    }
+    else if agNum = 7
+    {
+        ag7 on.
+    }
+    else if agNum = 8
+    {
+        ag8 on.
+    }
+    else if agNum = 9
+    {
+        ag9 on.
+    }
+    else if agNum = 10
+    {
+        ag10 on.
+    }
 }

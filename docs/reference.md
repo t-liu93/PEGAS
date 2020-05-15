@@ -98,9 +98,11 @@ message     | `string`           | Optional\*. Message that will be printed in t
 throttle    | `scalar`           | **Used only if** `type` **is** `"throttle"`. Desired throttle setting, value in range \[0-1\].
 massLost    | `scalar`           | **Used only if** `type` **is** `"jettison"`. Informs the system of mass amount lost in the process.
 angle       | `scalar`           | **Used only if** `type` **is** `"roll"`. New roll angle.
-actiongroup | `action group`     | **Used only if** `type` **is** `"actiongroup"`, the action group to be triggered.
+groupnumber | `integer`     | **Used only if** `type` **is** `"actiongroup"`, the number of action group to be triggered\*\*.
 
 \* - for events of type `throttle` and `roll` message will be automatically generated.
+
+\*\* - Only standard action group (AG1 up to and include AG10) are supported.
 
 Available event types:
 
@@ -111,7 +113,7 @@ stage        | s       | Hits spacebar (a single `STAGE.` command in kOS).
 jettison     | j       | Like `stage` but accounts for the mass lost during the event (subtracting the value under `massLost` key).
 throttle     | t       | Sets the throttle to given value (`throttle` key) - only works during the passive guidance phase.
 roll         | r       | Changes the roll component of vehicle attitude (pitch and yaw are dynamically calculated).
-actiongroup | ag      | Run action group `X`, `X` is given as `agX` in `actiongroup` key. This is the same as you press number `X` once\**.
+actiongroup  | ag      | Run action group `X`, `X` is given as an integer in `groupnumber` key. This is the same as you press number `X` once\**.
 
 \* - can be used instead of the full event type name.
 
