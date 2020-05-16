@@ -1,5 +1,8 @@
 ### Change log
 
+## Small bugfix regarding getting vertical ascent time (2020-05-16)
+Small bugfix regarding getting vertical ascent time. When `verticalAscentSpeed` is set, the script could not get the exact boost pitch time correctly.
+
 ## Revise action group handler in sequence (2020-05-15)
 * Revised action group handler in sequence control, currently only support `action group 1` to `action group 10` (a.k.a. the standard action group). If you have plugins line `action group extended` installed, the remaining action groups cannot be triggered.
     * Known issue: The current implementation of action group handler **DOES NOT** handle mass lost for this action. This means, if you jettison something in an action group, the mass of that object will not be subtracted from your vessel. Hence, it's better to use this action **before** UPFG activation. The handle of mass lost will be added later.

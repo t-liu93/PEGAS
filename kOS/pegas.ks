@@ -80,13 +80,13 @@ createUI().
 LOCK THROTTLE TO throttleSetting.
 LOCK STEERING TO steeringVector.
 SET ascentFlag TO 0.    // 0 = vertical, 1 = pitching over, 2 = notify about holding prograde, 3 = just hold prograde
+set verticalAscentTime to 0.
 // Main loop - wait on launch pad, lift-off and passive guidance
 UNTIL ABORT {
     // Sequence handling
     IF systemEventFlag = TRUE { systemEventHandler(). }
     IF   userEventFlag = TRUE {   userEventHandler(). }
     IF  commsEventFlag = TRUE {  commsEventHandler(). }
-    local verticalAscentTime is 0.
     // Control handling
     IF ascentFlag = 0 {
         // The vehicle is going straight up for given amount of time or given amount of vertical velocity
@@ -104,7 +104,7 @@ UNTIL ABORT {
         {
             if ship:verticalSpeed >= controls["verticalAscentSpeed"]
             {
-                set verticalAscentTime to time:seconds.
+                set verticalAscentTime to time:seconds - liftoffTime:seconds.
                 // TODO: Use a function to do pitch
                 SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
                 // Then it changes attitude for an initial pitchover "kick"
