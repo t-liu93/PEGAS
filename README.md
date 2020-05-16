@@ -3,6 +3,10 @@
 # About this Fork
 This is a fork of [Noiredd's](https://github.com/Noiredd) PEGAS script, I'll keep working on it based on my own need and wishes.
 
+## Known Issues
+* The `actiongroup` user event does not consider mass lost, so at this moment it is recommended to use this event when UPFG is not activated.
+* If `initialRoll` is left empty (i.e. set to launch azimuth), the rolling is not so stable due to the limitation of kOS' cooked flight control. The cooked control PID might be tuned in the coming changes. At this moment, it is recommend to use symmetric design of your rocket to avoid rolling issues. So a design like Atlas V with **single booster** is **HIGHLY NOT RECOMMENDED** if you want to roll at the beginning of your launch. Even with several boosters, the Atlas V config (in general asymmetric boosters) is not really recommended **if you want to roll at the beginning of your flight**. On the other hand, if you are launching to the east without any rolling, then it should be fine.
+
 # PEGAS
 *Powered Explicit Guidance Ascent System*, from here referred to as *PEGAS*, is an ascent autopilot for Kerbal Space Program made and ran in [kOS](http://forum.kerbalspaceprogram.com/index.php?/topic/61827-122-kos-scriptable-autopilot-system-v103-20161207/), designed to control launch vehicles under a modified version of the game running [Realism Overhaul](http://forum.kerbalspaceprogram.com/index.php?/topic/155700-113-realism-overhaul).
 Its unique feature is an implementation of a real-word rocket guidance algorithm: Unified Powered Flight Guidance, as used in the **Space Shuttle** GN&C computer for the standard ascent flight mode.

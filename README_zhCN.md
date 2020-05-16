@@ -1,6 +1,11 @@
 # 关于这个分支
 这个分支来源于原作者[Noiredd](https://github.com/Noiredd)的PEGAS项目，一个将航天飞机发射导航算法使用kOS在坎巴拉太空计划中的实现。
 
+## 已知的一些问题
+* 在现在的版本中，`actiongroup`用户事件并不会考虑事件导致的质量损失（例如你抛逃逸塔使飞船减轻的质量）。所以这个类别的事件最好仅仅在UPFG并没有激活的时候使用。
+* 如果你不设定`initialRoll`，也就是说将初始滚转由系统自动设定为发射方位角，根据我的观察滚转并不是特别稳定。我认为这是由于kOS的`lock steering`机制中PID调参并不完善导致的。我在未来的改动中可能会试图调制一下参数，或者加入一些可以设置PID参数的选项，但是现在就暂时不调了。所以说，如果你让飞船在起飞时做大幅度的滚转，那最好不要用Atlas V这种单助推器的构型（不要跟ULA不学好）。
+
+
 # PEGAS
 *Powered Explicit Guidance Ascent System*, 又被称为 *PEGAS*，是一个在坎巴拉太空计划中使用[kOS](http://forum.kerbalspaceprogram.com/index.php?/topic/61827-122-kos-scriptable-autopilot-system-v103-20161207/)实现的自动发射系统。这个系统可以被用来在安装了[真实大修模组](http://forum.kerbalspaceprogram.com/index.php?/topic/155700-113-realism-overhaul)的游戏中进行自动发射。
 
