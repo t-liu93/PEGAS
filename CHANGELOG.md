@@ -2,7 +2,7 @@
 * [中文版](./CHANGELOG_zhCN.md)
 
 ## New feature added: Auto time warp to launch time (2020-05-22)
-Please refer to [Reference](./docs/reference.md) for more detail.
+Please refer to [Reference](./docs/reference.md#auto-time-warp) for more detail.
 
 ## Small bugfix regarding getting vertical ascent time (2020-05-16)
 Small bugfix regarding getting vertical ascent time. When `verticalAscentSpeed` is set, the script could not get the exact boost pitch time correctly.

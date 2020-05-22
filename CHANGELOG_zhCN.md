@@ -2,7 +2,7 @@
 中文版的改动说明仅记录我Fork以后的改动
 
 ## 新特性：在发射前自动时间加速 (2020-05-22)
-请参考[Reference（英文）](./docs/reference.md)以获取更多信息。
+请参考[Reference（英文）](./docs/reference.md#auto-time-warp)以获取更多信息。
 
 ## 有关于垂直上升时间设置的Bugfix (2020-05-16)
 在之前的版本中，如果为设置`verticalAscentSpeed`的话，发射程序并不会记录真正的重力转向开始时间，此Bug现已修复。
