@@ -1,5 +1,5 @@
 ### Change log
-* [中文版](./CHANGLOG_zhCN.md)
+* [中文版](./CHANGELOG_zhCN.md)
 
 ## New feature added: Auto time warp to launch time (2020-05-22)
 Please refer to [Reference](./docs/reference.md) for more detail.
