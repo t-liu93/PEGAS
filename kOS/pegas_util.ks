@@ -1003,3 +1003,29 @@ function actiongroup_handler
         ag10 on.
     }
 }
+
+function waiting_warp_control
+{
+    set timeToLaunch to liftoffTime:seconds - time:seconds.
+    if timeToLaunch > 7200
+    {
+        set kuniverse:timewarp:rate to 10000.
+    }
+    else if timeToLaunch > 1800
+    {
+        set kuniverse:timewarp:rate to 1000.
+    }
+    else if timeToLaunch > 60
+    {
+        set kuniverse:timewarp:rate to 100.
+    }
+    else if timeToLaunch > 30
+    {
+        set kuniverse:timewarp:rate to 10.
+    }
+    else
+    {
+        set kuniverse:timewarp:rate to 1.
+        set ascentFlag to 0.
+    }
+}

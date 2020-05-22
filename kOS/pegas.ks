@@ -79,7 +79,7 @@ createUI().
 // Prepare control for vertical ascent
 LOCK THROTTLE TO throttleSetting.
 LOCK STEERING TO steeringVector.
-SET ascentFlag TO 0.    // 0 = vertical, 1 = pitching over, 2 = notify about holding prograde, 3 = just hold prograde
+SET ascentFlag TO 9.    // 0 = vertical, 1 = pitching over, 2 = notify about holding prograde, 3 = just hold prograde, 9 = wait on pad
 set verticalAscentTime to 0.
 // Main loop - wait on launch pad, lift-off and passive guidance
 UNTIL ABORT {
@@ -87,6 +87,10 @@ UNTIL ABORT {
     IF systemEventFlag = TRUE { systemEventHandler(). }
     IF   userEventFlag = TRUE {   userEventHandler(). }
     IF  commsEventFlag = TRUE {  commsEventHandler(). }
+    if ascentFlag = 9
+    {
+        waiting_warp_control().
+    }
     // Control handling
     IF ascentFlag = 0 {
         // The vehicle is going straight up for given amount of time or given amount of vertical velocity
