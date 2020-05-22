@@ -202,3 +202,15 @@ Command        | Parameters            | Availability  | Description
 setUpfgTime    | `scalar` (optional)   | passive phase | Change time when the UPFG guidance phase should start. Useful if it can't be predicted before launch. If called without parameters, will default to now (`TIME:SECONDS`).
 engineShutdown | multiple `string`s    | passive phase | Shutdown engines specified by nametags. Multiple nametags and multiple engines with the same nametag allowed.
 setThrottle    | 2 `scalar`s           | passive phase | Change the throttle setting in flight. Parameters, in that order: desired throttle setting, minimum engine throttle, both as numbers between 0 and 1.
+
+### Auto Time Warp
+
+Auto time warp will help you to automatically start time warp before launching. This is very useful if you want to wait for a launch window on the launch pad. The auto time warp follows the following scheme:
+
+Time before launch (seconds)    | Time warp rate
+---                             | ---
+Longer than 2 hours             | 10000x
+Between 0.5 hour and 2 hours    | 1000x
+Between 1 minute and 0.5 hour   | 100x
+Between 30 seconds and 1 minute | 10x
+Shorter than 30 seconds         | 1x
