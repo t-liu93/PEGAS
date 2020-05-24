@@ -3,6 +3,7 @@
 
 ## Increase launch stability (2020-05-24)
 * Increase launch stability by delaying steering control by 1 second.
+    * On launch pad, kos cannot always get the ship's attitude correctly (by using `ship:up` or `lookdirup`). Therefore the initial attitude control can sometimes go crazy. When launch clamp is released and the rocket starts moving, everything will be okay.
 * Modify the default roll angle to 90 degree instead of launch azimuth. The roll angle is relative to heading (launch zaimuth), so it should be kept to 90 degree.
 
 ## New feature added: Auto time warp to launch time (2020-05-22)
