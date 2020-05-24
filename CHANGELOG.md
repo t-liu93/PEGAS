@@ -1,6 +1,10 @@
 ### Change log
 * [中文版](./CHANGELOG_zhCN.md)
 
+## Increase launch stability (2020-05-24)
+* Increase launch stability by delaying steering control by 1 second.
+* Modify the default roll angle to 90 degree instead of launch azimuth. The roll angle is relative to heading (launch zaimuth), so it should be kept to 90 degree.
+
 ## New feature added: Auto time warp to launch time (2020-05-22)
 Please refer to [Reference](./docs/reference.md#auto-time-warp) for more detail.
 

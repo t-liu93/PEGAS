@@ -36,7 +36,7 @@ GLOBAL userEventFlag IS FALSE.
 GLOBAL commsEventFlag IS FALSE.
 GLOBAL throttleSetting IS 1.        // This is what actually controls the throttle,
 GLOBAL throttleDisplay IS 1.        // and this is what to display on the GUI - see throttleControl() for details.
-GLOBAL steeringVector IS LOOKDIRUP(SHIP:FACING:FOREVECTOR, SHIP:FACING:TOPVECTOR).
+GLOBAL steeringVector IS ship:up.
 GLOBAL steeringRoll IS 0.
 GLOBAL upfgConverged IS FALSE.
 GLOBAL stagingInProgress IS FALSE.
@@ -64,8 +64,8 @@ IF controls:HASKEY("initialRoll") {
 }
 else
 {
-    // If no steering roll is given, then just like MechJeb's PVG launch, set initial roll to launch azimuth.
-    set steeringRoll to launchAzimuth().
+    // If no steering roll is given, then just like MechJeb's PVG launch, set initial roll to facing 90 degree (east).
+    set steeringRoll to 90.
 }
 // Set up the system for flight
 setSystemEvents().        // Set up countdown messages
@@ -78,7 +78,7 @@ setComms().             // Setting up communications
 createUI().
 // Prepare control for vertical ascent
 LOCK THROTTLE TO throttleSetting.
-LOCK STEERING TO steeringVector.
+unlock steering.
 SET ascentFlag TO 9.    // 0 = vertical, 1 = pitching over, 2 = notify about holding prograde, 3 = just hold prograde, 9 = wait on pad
 set verticalAscentTime to 0.
 // Main loop - wait on launch pad, lift-off and passive guidance
@@ -93,12 +93,19 @@ UNTIL ABORT {
     }
     // Control handling
     IF ascentFlag = 0 {
+        // Lock steering 1 second after liftoff, since the heading data on pad is not always correct.
+        if TIME:SECONDS >= liftoffTime:SECONDS + 1
+        {
+            set steeringVector to ship:up.
+            lock steering to steeringVector.
+        }
         // The vehicle is going straight up for given amount of time or given amount of vertical velocity
         if controls:haskey("verticalAscentTime")
         {
             set verticalAscentTime to controls["verticalAscentTime"].
             IF TIME:SECONDS >= liftoffTime:SECONDS + controls["verticalAscentTime"] {
                 SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
+                lock steering to steeringVector.
                 // Then it changes attitude for an initial pitchover "kick"
                 SET ascentFlag TO 1.
                 pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
@@ -111,6 +118,7 @@ UNTIL ABORT {
                 set verticalAscentTime to time:seconds - liftoffTime:seconds.
                 // TODO: Use a function to do pitch
                 SET steeringVector TO aimAndRoll(HEADING(mission["launchAzimuth"],90-controls["pitchOverAngle"]):VECTOR, steeringRoll).
+                lock steering to steeringVector.
                 // Then it changes attitude for an initial pitchover "kick"
                 SET ascentFlag TO 1.
                 pushUIMessage( "Pitching over by " + ROUND(controls["pitchOverAngle"],1) + " degrees." ).
